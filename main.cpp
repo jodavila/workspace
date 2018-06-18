@@ -1,225 +1,243 @@
+/* 
+ * ============================================================================
+ *	 Nome do Arquivo:  save.cpp
+ *
+ *		   Descricao: Dada uma matriz, um ponto e um valor. Retorna uma lista
+ *	com todos os vertices que tem valor menor ou igual ao valor informado em
+ *	relacao ao ponto.
+ *
+ *        		Data:  17/06/201 19:08:27
+ *        Compilador:  gcc
+ *
+ *         	Autor	:  Joana DAvila (00274739) - joana.davila@inf.ufrgs.br
+ *   		Curso	:  Ciencia da Computacao
+ * ============================================================================
+ */
+
 #include<stdio.h>
+#define max_loc 100
+/*************************** FUNCOES AUXILIARES ************************************/
+//  Nome da função: ImprimeAdjacentes
+//  Objetivo: mostrar todos os valores diretamente ligados a um vertice
+//  Entrada: uma matriz, um ponto e o total de itens
+//  Saida: uma string
 
-/*
-  Nome da função: ..
-  Objetivo: ..
-  Entrada: ..
-  Saida: .. 
-*/
-
-/*
-tipo nome(parametros)
-{
-  intruções;
-  retorno/
+void ImprimeAdjacentes(int matriz[max_loc][max_loc], int ponto, int total){
+	printf("Adjacentes de %d \n",ponto);
+	for (int i = 0; i < total; ++i)
+	{	
+    	if ((matriz[ponto][i]>0)||(matriz[ponto][i] == -1))
+			printf("%d ",i);
+	}
+	printf("\n");
 }
-*/
-/****************************************************************/
 
-/*
-  Nome da função: exibe
-  Objetivo: Imprime na tela, uma lista de numeros
-  Entrada: um vetor de inteiros
-  Saida: uma string 
-*/
+//  Nome da função: exibe
+//  Objetivo: Imprime na tela, uma lista de numeros
+//  Entrada: um vetor de inteiros
+//  Saida: uma string 
 
-void exibe(int lista[100])
-{
+void exibe(int lista[max_loc], int qtd){
 	int i; 
-
-	for ( i=0; lista[i]>0; i++ )
-   		printf("%d ",lista[i]);
-
-   printf("\n");
+	for ( i=1; i < qtd; i++ )
+   		printf("%d:[%d] ",i, lista[i]);
+   	printf("\n");
 }
-/****************************************************************/
 
-/*
-  Nome da função: mostraMapa
-  Objetivo: Exibir a matriz na configuração localizacao - distancia entre - localizacao
-  Entrada:	matriz(*)[100] - matriz quadrada no formato int de tamanho 100,
-  			int r - quantidades de ruas,
-  			int l - quantidade de localidades
-  Saida: uma string
-*/
-void mostraMapa(int matriz[100][100], int r, int l)
-{
+//  Nome da função: mostraMapa
+//  Objetivo: Exibir a matriz na configuração: localizacao - distancia entre - localizacao
+//  Entrada: matriz(*)[100] - matriz quadrada no formato int de tamanho 100,
+//  		int r - quantidades de ruas, int l - quantidade de localidades
+//  Saida: uma string
+
+void mostraMapa(int matriz[100][100], int r, int l){
 	int i;
 	int j;
 	int peso;
 
 	printf("exibindo cidade \n");
   	for ( i=0; i<r; i++ )
-  		for ( j=0; j<l; j++ )
+  	{	for ( j=0; j<l; j++ )
     	{
     		peso = matriz[i][j];
-    		if (peso>0)
-	       	printf ("%d - ( %d ) - %d\n", i,peso,j);
+    		if ((peso>0)||(peso == -1))
+	       		printf ("%d - ( %d ) - %d\n", i,peso,j);
    		}
-}
-
-/****************************************************************/
-
-/*
-	Nome da função: areasRiscos
-	Objetivo: Analizar o alcance do raio de destruição da bomba e
-	identifcar quais os pontos precisam ser evacuados. 
-	Entrada:	matriz quadrada de tamanho 100, 
-				a quantidade de localidades,
-	  			a localizacao da bomba,
-	  			o alcance da bomba,
-	Saida: um vetor 
-*/
- 
-void areasRiscos(int matriz[100][100], int l, int bomba, int raio, int p)
-{
-	int i=0;
-	int evc[100];
-	int peso;
-	int n; 
-
-// adiciona a lista de evacuacao o loc ond a bomba esta
-	evc[0] = bomba;
-
-/*    
-	Se distancia entre onde esta a bomba (bomb) e localidade (loc) 
-    for menor ou igual ao raio então a localidade precisa ser evacuada
-*/
-   for ( i; i<l; i++ ){
-   	peso = matriz[bomba][i];
-    if (peso>0 && peso<=raio){
-    	evc[n] = i;
-    	n++;
-    }
-   }
-
-/*
-	percorrer o caminho de bomb a loc, se peso das arestas <= raio
-	loc entra para lugares a ser evacuados
-*/
-
-/*
-	chamar busca, e verificar a lista, 
-   	-> se não estiver na lista inclui,
-   	-> se estiver em frente
-*/
-
-   evc[n+1] = -1; // coloca um "fim" na lista
-
-   // Ordenamento -> evc = radix(evc);
-   // Exibicao da saida -> 
-   exibe(evc);
-   // exibicao ordenada (radix(evc));
-
-}
-/****************************************************************/
-/*
-  Nome da função: ..
-  Objetivo: ..
-  Entrada: ..
-  Saida: .. 
-
-  Procedimento radix SortLSD(A,D)
- 
-	// A: array de entrada
-	// D: numero de digitos
-*/
-
-/*
-void ordena(int lista[100],int x)
-radix(int array[], int digitos)
-{	
-	int d;
-	int dj;
-
-	int B[100] = array;
-	int C[100];
-
-
-	for (d=digitos-1; d>0; d--)
-	{
-		// Counting Sort analisando d-esimo digito
-		
-		for (i=0; i<9; i++)
-			C[i] = 0;
-
-		for (i=1; i</*length(A)*/ //; i++)
-/*		{
-			dj = digito(A[j],d) ;
-		
-			C[dj] = C[dj] + 1 ;
-		}
-		
-		for (i=0; i<9; i++)
-			C[i] = C[i] + C[i−1];
-		
-		for (i=/*length(A)*///; i>1; i--)
-/*		{
-			dj = digito(A[j],d) ;
-			B[C[dj]]=A[j];
-			C[dj]= C[dj]− 1;
-		}
-		// Copia array auxiliar B de volta em A
-		array = B; 
 	}
-// retorno??
 }
 
-*/
+/*************************** FUNCOES PRINCIPAIS *************************************/
+//  Nome da função: sos
+//  Objetivo: Exibe quais pontos do vetor são menores ou igual a um valor
+//  Entrada: um vetor, um valor a ser comparadp, um valor que servira de parada
+//  Saida: uma string
 
-/****************************************************************/
-int main()
-{
+void sos(int lista[max_loc], int valor, int flag){
+	int i = 1; 
+	while( i < flag ){
+		if ( lista[i] <= valor)
+		{
+			printf("%d ",i);
+		}
+		i++;
+	}
+}
+//  Nome da função: EstaNaLista
+//  Objetivo: Verifica se um valor esta no vetor
+//  Entrada: um vetor, um valor
+//  Saida: um valor inteiro (0,1)
+
+int EstaNaLista(int lista[max_loc], int valor){
+	int i = 1; 
+	
+	while( lista[i] > 0 ){
+		if ( lista[i] == valor)
+		{
+			return 1;
+		}
+		i++;
+	}
+	return 0;
+}
+
+//  Nome da função: areasRiscos
+//  Objetivo: 
+//  Entrada: matriz, l (qtd de localidades),
+//		b (posicao da bomba), a (alcance da bomba)
+//  Saida: uma string 
+
+void areasRiscos(int matriz[max_loc][max_loc], int l, int b, int a){
+	int cont = 0;
+	int visitar[max_loc];
+	int dist[max_loc];
+	int fixo[max_loc];
+	int posicao = 0;
+	int x = 0;
+	int y = 0;
+	int k = 2; // pois fixo[1] é da bomba
+	
+	l = l + 1;
+
+	for(int i = 1; i < l; i++)	{
+	  visitar[i] = -1;
+	 	 dist[i] = -1;
+		 fixo[i] = -1;
+	}
+	
+	fixo[1] = b;
+
+	for (int i = 1; i < l; ++i)	{
+    	if (matriz[b][i]>0)	{
+			cont++;
+			fixo[cont+1] = i;
+			visitar[cont] = i;
+			dist[i] = matriz[b][i];
+		}	
+	}
+	
+	posicao = cont+1;
+	dist[b] = 0;
+
+	while(k < l){
+		cont = 0;
+		y = fixo[k];
+	
+		for (int i = 1; i < l; ++i)	{
+			visitar[i]=-1;		
+			if (matriz[y][i]>0)	{
+				cont++;
+				visitar[cont] = i; 
+			}
+		}
+		
+//		printf("dist:");exibe(dist,l);	printf("\n");
+		for (int i = 1; visitar[i] > 0; i++)	{
+			x = visitar[i];
+			if (EstaNaLista(fixo,x) == 0) { 		
+				dist[x] = matriz[y][x] + dist[y];
+				posicao+=1;
+				fixo[posicao] = x;
+			} else	{
+				if(dist[x] == -1){
+					dist[x] = matriz[y][x] + dist[y];
+				}
+			}			
+		}
+		k++;	
+	}
+	sos(dist,a,l);
+	printf("\n");
+	exibe(dist,l);
+}
+
+int main(){
 	// Definições de todas as variaveis locais (do main) 
-	int num = 0;	// total de teste
-	int loc = 0;	// vertices - quantidade de localidades 
-	int ruas = 0;	// arestas -- quantidade de ruas
+	int num;	// total de teste
+	int loc;	// vertices - quantidade de localidades 
+	int ruas;	// arestas -- quantidade de ruas
   
 	// Representação da rua: x <---(d)----> y
 	// Uma rua = x,y,d.  onde
-  	int x = 0;    // um dos extremos da rua
-  	int y = 0;    // outro extremo da rua
-  	int d = 0;    // valor/peso da aresta
+  	int x;    // um dos extremos da rua
+  	int y;    // outro extremo da rua
+  	int d;    // valor/peso da aresta
   
   	// Informações da Bomba
-  	int bomb = 0;	// A localidade da bomba é um valor entre 0 a loc
-  	int raio = 0;	// Raio de destruição
+  	int bomb;	// A localidade da bomba é um valor entre 0 a loc
+  	int raio;	// Raio de destruição
 
 	// Variaveis Auxiliares
-  	int i = 0;
-	int cidade[100][100];
+  	int i;
   	int k = 0;
+	int cidade[max_loc][max_loc];
 
   	// Quantidade de Testes
-	//printf("qtd testes:"); // deve ser excluido antes da entrega
+	//printf("qtd testes:");
 	scanf("%d",&num);
 
-	do{
-		k++;
-		// Leitura do Mapa
-		//printf("qtd de localidade e ruas: "); // deve ser excluido antes da entrega
-		scanf("%d%d",&loc, &ruas);
-		  
-		for (i; i < ruas; ++i)
-		{
-		    //printf("rua %d :",i+1); // deve ser excluido antes da entrega
-			scanf("%d%d%d",&x, &y, &d);
+	while(num>k){
 
-			// Duplo salvamento de distancias para garantir a pesquisa depois 
+		for(i = 0; i < max_loc; i++)
+		{
+		    cidade[x][y] = -1;
+		    cidade[y][x] = -1;
+		}
+
+		ruas = 0;
+		bomb = 0;
+		raio = 0;
+		loc = 0;
+		x = 0;
+		y = 0; 
+		d = 0;
+		i = 0;
+
+	// Leitura do Mapa
+	//	printf("qtd de localidade e ruas: ");
+		 scanf("%d %d",&loc, &ruas);
+			  
+		for (i = 0; i < ruas; ++i)
+		{
+	//		printf("> %d : ",i+1);
+			scanf("%d %d %d",&x, &y, &d);
+
+	// Duplo salvamento de distancias para garantir a pesquisa depois 
 		    cidade[x][y] = d;
 		    cidade[y][x] = d;
 		}
 
-		  // ONDE ESTA A BOMBA
-		//printf("onde esta a bomba e seu raio: "); // deve ser excluido antes da entrega
-		scanf("%d%d",&bomb, &raio);
+	// ONDE ESTA A BOMBA
+		printf("onde esta a bomba e seu raio: "); 
+		scanf("%d %d",&bomb, &raio);
 		cidade[bomb][bomb] = -1;
 
-		printf("Caso %d: ",k); 
-		areasRiscos(cidade,loc,bomb,raio,k);
+	// mostraMapa(cidade, ruas, loc);
 
-
-	} while (k>num);
+		printf("Caso %d: ",k+1); 
+		areasRiscos(cidade,loc,bomb,raio);
+		printf("\n");
+		k++;
+	}
 
 	return 0;	  
 }
