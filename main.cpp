@@ -6,10 +6,10 @@
  *	com todos os vertices que tem valor menor ou igual ao valor informado em
  *	relacao ao ponto.
  *
- *        		Data:  17/06/201 19:08:27
- *        Compilador:  gcc
+ *        	Data:  17/06/201 19:08:27
+ *        	Compilador:  gcc
  *
- *         	Autor	:  Joana DAvila (00274739) - joana.davila@inf.ufrgs.br
+ *         	Autor	:  jodavila
  *   		Curso	:  Ciencia da Computacao
  * ============================================================================
  */
