@@ -1,2 +1,0 @@
-# ChartAnalysis
-Trabalho de Graficos
