@@ -64,8 +64,30 @@ def NaLista(lista,vertice, valor):
        return True
     else:
        return False
-        
 
+#inicializa matriz nDisp x 2 onde cada linha é um dispositivo
+#a primeira coluna é o indice do pred do dispositivo na matriz
+#e a segunda a sua chave
+def prim_inicializacao(matriz, lLimitados):
+    arvore = []
+    n = 0
+    #percorre todos os n dispositivos
+    while n < len(matriz[0]):
+        #se n for limitado precisa setar o pred mais barato
+        if((n + 1) in lLimitados):
+            lChave = float("inf")
+            # percorre toda a linha do dispositivo n procurando a
+            # conexão mais barata com um não-limitado
+            for i in range(len(matriz[n])):
+                if matriz[n][i] <= lChave and (i + 1) not in lLimitados:
+                    lPred = i
+                    lChave = matriz[n][i]
+            arvore.append([lPred, lChave])
+        #se não faz inicialização normal
+        else:
+            arvore.append([float("NaN") , float("inf")])
+        n += 1
+    return arvore
 ## main
 #inicializacao()
 
@@ -74,8 +96,10 @@ print "qtd campus"
 nCampus = raw_input()
 
 print "leitura campus"
-leitura_campus()
+matriz = leitura_campus()
 
 print "limitados"
-leitura_limitados()
+lLimitados = leitura_limitados()
 
+arvore = prim_inicializacao(matriz, lLimitados)
+print "inicialização:" , arvore
