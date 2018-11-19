@@ -88,6 +88,46 @@ def prim_inicializacao(matriz, lLimitados):
             arvore.append([float("NaN") , float("inf")])
         n += 1
     return arvore
+
+#devolve a fila com os dispositivos ordenados
+#de forma crescente conforme a sua chave na árvore
+def reorganizaFila(Q, arvore):
+    novoQ = []
+    while Q:
+        for i in Q:
+            if all(arvore[j][1] >= arvore[i][1] for j in Q):
+                novoQ.append(i)
+                Q.remove(i)
+    return novoQ
+
+#retorna uma tabela representando a arvore geradora minima do grafo
+#onde cada linha é m dispositivo, a primeira coluna é seu predecessor
+#e a segunda a sua chave
+def prim_AGM(matriz, lLimitados, arvore):
+    Q = []
+    r = 0; #raiz é o dispositivo de indice 0 na arvore
+    arvore[r][1] = 0
+    #armazena em Q os indices dos dispositivos não limitados
+    for v in range(len(matriz[0])):
+        if (v+1) not in lLimitados:
+            Q.append(v)
+
+    while Q:
+        # retira da fila o dispositivo com menor chave
+        # na árvore (sempre o primeiro)
+        u = Q.pop(0)
+        for v in range(len(matriz[u])):
+            #para cada dispositivo, se custo(u,v) > chave(v)...
+            if v in Q and matriz[v][u] < arvore[v][1]:
+                #pred de v é u
+                arvore[v][0] = u
+                #chave de v é custo(u,v)
+                arvore[v][1] = matriz[u][v]
+
+                #reorganiza Q de forma crescente quanto à chave
+                Q = reorganizaFila(Q, arvore)
+    return arvore
+
 ## main
 #inicializacao()
 
@@ -103,3 +143,6 @@ lLimitados = leitura_limitados()
 
 arvore = prim_inicializacao(matriz, lLimitados)
 print "inicialização:" , arvore
+
+arvore = prim_AGM(matriz, lLimitados, arvore)
+print arvore
