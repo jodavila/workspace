@@ -100,30 +100,6 @@ def prim_inicializacao(matriz, lLimitados):
         n += 1
     return arvore
 
-#inicializa matriz nDisp x 2 onde cada linha é um dispositivo
-#a primeira coluna é o indice do pred do dispositivo na matriz
-#e a segunda a sua chave
-def prim_inicializacao(matriz, lLimitados):
-    arvore = []
-    n = 0
-    #percorre todos os n dispositivos
-    while n < len(matriz[0]):
-        #se n for limitado precisa setar o pred mais barato
-        if((n + 1) in lLimitados):
-            lChave = float("inf")
-            # percorre toda a linha do dispositivo n procurando a
-            # conexão mais barata com um não-limitado
-            for i in range(len(matriz[n])):
-                if matriz[n][i] <= lChave and (i + 1) not in lLimitados:
-                    lPred = i
-                    lChave = matriz[n][i]
-            arvore.append([lPred, lChave])
-        #se não faz inicialização normal
-        else:
-            arvore.append([float("NaN") , float("inf")])
-        n += 1
-    return arvore
-
 #devolve a fila com os dispositivos ordenados
 #de forma crescente conforme a sua chave na árvore
 def reorganizaFila(Q, arvore):
@@ -176,5 +152,7 @@ for campus in range(int(nCampus)):
     print "Limitados do campus",campus+1
     leitura_limitados(campus+1)
 
-arvore = prim_AGM(matriz, lLimitados, arvore)
-print arvore
+arvores_dict={}
+for campus in range(int(nCampus)):
+    arvores_dict[str(campus+1)] = prim_AGM(matrizes_dict[str(campus+1)], limitados_dict[str(campus+1)], prim_inicializacao(matrizes_dict[str(campus+1)],limitados_dict[str(campus+1)]))
+    print arvores_dict[str(campus+1)]
