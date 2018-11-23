@@ -1,7 +1,6 @@
 #!/usr/bin/python
 #coding: utf-8
 
-__author__ = "43133"  
 __status__ = "Development" 
 __date__   = "06/11/2018 21:37:03"
 
@@ -12,18 +11,20 @@ lLimitados = []
 nCampus = 0
 nDisp = 0
 linha = 0
-matriz = []
+matrizes_dict={}
+limitados_dict={}
 
 #
-# Realiza a leitura da qtd de dispositivos dos campos e suas distancias
-# Monta a matriz com isso
+# Realiza a leitura da quantidade de dispositivos dos campos e suas distancias
+# Com base Monta a matriz com isso
 #
-def leitura_campus():
-    print "quantas linhas"
+def leitura_campus(campus_x):
+#    print "Quantas dispositivos:"
     nDisp = int(raw_input()) 
     n = 0
+    matriz=[]
     while n < nDisp:
-        print "lendo linha ",str(n)
+ #       print "Lendo Dispositivo ",str(n+1)
         #leitura de uma string com os numeros
         linha = raw_input() 
         
@@ -35,47 +36,118 @@ def leitura_campus():
         
         n = n + 1
 
-    return matriz
+    matrizes_dict[str(campus_x)]=matriz
+    return (None)
 
+######################################################################
 
-def leitura_limitados():
-    print "quantos limitados"
+def leitura_limitados(campus_x):
+  #  print "Quantos limitados"
     quantidade = int(raw_input()) 
     
-    print "lista limitados"
+#    print "Lista limitados"
     linha = raw_input() 
     
     linha = map(int, linha.split())
         
-    if len(linha) == quantidade:
-        print "ok"
-    
-    return linha
+ #   if len(linha) == quantidade:
+ #       print "ok"
 
-#
-# if NaLista(matriz,linha,valor) == True:
-#     resultado se true
-# else:
-#     resultado se falso
-# 
+    limitados_dict[str(campus_x)]=linha
+    return None
 
-def NaLista(lista,vertice, valor):
-    if valor in lista[vertice] :
-       return True
-    else:
-       return False
-        
+def cria_Dict():
+    for i in range(int(nCampus)):
+        matrizes_dict[str(i+1)]=[]
+        limitados_dict[str(i+1)]=[]
+    return(matrizes_dict,limitados_dict)
+
+#inicializa matriz nDisp x 2 onde cada linha é um dispositivo
+#a primeira coluna é o indice do pred do dispositivo na matriz
+#e a segunda a sua chave
+def prim_inicializacao(matriz, lLimitados):
+    arvore = []
+    n = 0
+    #percorre todos os n dispositivos
+    while n < len(matriz[0]):
+        #se n for limitado precisa setar o pred mais barato
+        if((n + 1) in lLimitados):
+            lChave = float("inf")
+            # percorre toda a linha do dispositivo n procurando a
+            # conexão mais barata com um não-limitado
+            for i in range(len(matriz[n])):
+                if matriz[n][i] <= lChave and (i + 1) not in lLimitados:
+                    lPred = i
+                    lChave = matriz[n][i]
+            arvore.append([lPred, lChave])
+        #se não faz inicialização normal
+        else:
+            arvore.append([float("NaN") , float("inf")])
+        n += 1
+    return arvore
+
+#devolve a fila com os dispositivos ordenados
+#de forma crescente conforme a sua chave na árvore
+def reorganizaFila(Q, arvore):
+    novoQ = []
+    while Q:
+        for i in Q:
+            if all(arvore[j][1] >= arvore[i][1] for j in Q):
+                novoQ.append(i)
+                Q.remove(i)
+    return novoQ
+
+#retorna uma tabela representando a arvore geradora minima do grafo
+#onde cada linha é m dispositivo, a primeira coluna é seu predecessor
+#e a segunda a sua chave
+def prim_AGM(matriz, lLimitados, arvore):
+    Q = []
+    r = 0; #raiz é o dispositivo de indice 0 na arvore
+    arvore[r][1] = 0
+    #armazena em Q os indices dos dispositivos não limitados
+    for v in range(len(matriz[0])):
+        if (v+1) not in lLimitados:
+            Q.append(v)
+
+    while Q:
+        # retira da fila o dispositivo com menor chave
+        # na árvore (sempre o primeiro)
+        u = Q.pop(0)
+        for v in range(len(matriz[u])):
+            #para cada dispositivo, se custo(u,v) > chave(v)...
+            if v in Q and matriz[v][u] < arvore[v][1]:
+                #pred de v é u
+                arvore[v][0] = u
+                #chave de v é custo(u,v)
+                arvore[v][1] = matriz[u][v]
+
+                #reorganiza Q de forma crescente quanto à chave
+                Q = reorganizaFila(Q, arvore)
+    return arvore
+
+
+# Soma o segundo valor do array
+def peso(array):
+    total = 0
+    for i in range(len(array)):
+        total = total + array[i][1]
+    return total
+
 
 ## main
-#inicializacao()
 
-
-print "qtd campus"
+#print "Quantos campus:"
 nCampus = raw_input()
+cria_Dict()
 
-print "leitura campus"
-leitura_campus()
+for campus in range(int(nCampus)):
+ #   print "Leitura campus",campus+1
+    leitura_campus(campus+1)
+  #  print "Limitados do campus",campus+1
+    leitura_limitados(campus+1)
 
-print "limitados"
-leitura_limitados()
-
+arvores_dict={}
+for campus in range(int(nCampus)):
+    arvores_dict[str(campus+1)] = prim_AGM(matrizes_dict[str(campus+1)], limitados_dict[str(campus+1)], prim_inicializacao(matrizes_dict[str(campus+1)],limitados_dict[str(campus+1)]))
+    print "Campus ",campus+1,":",peso(arvores_dict[str(campus+1)])
+#    print arvores_dict[str(campus+1)]

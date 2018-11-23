@@ -1,0 +1,11 @@
+Campus 1: 1018
+Campus 2: 1007
+Campus 3: 9052
+Campus 4: 1021
+Campus 5: 1090
+Campus 6: 8087
+Campus 7: 1100
+Campus 8: 1041
+Campus 9: 1704
+Campus 10: 1034
+
