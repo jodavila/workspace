@@ -1,7 +1,6 @@
 #!/usr/bin/python
 #coding: utf-8
 
-__author__ = "43133"  
 __status__ = "Development" 
 __date__   = "06/11/2018 21:37:03"
 
@@ -16,16 +15,16 @@ matrizes_dict={}
 limitados_dict={}
 
 #
-# Realiza a leitura da qtd de dispositivos dos campos e suas distancias
-# Monta a matriz com isso
+# Realiza a leitura da quantidade de dispositivos dos campos e suas distancias
+# Com base Monta a matriz com isso
 #
 def leitura_campus(campus_x):
-    print "Quantas dispositivos:"
+#    print "Quantas dispositivos:"
     nDisp = int(raw_input()) 
     n = 0
     matriz=[]
     while n < nDisp:
-        print "Lendo Dispositivo ",str(n+1)
+ #       print "Lendo Dispositivo ",str(n+1)
         #leitura de uma string com os numeros
         linha = raw_input() 
         
@@ -43,32 +42,19 @@ def leitura_campus(campus_x):
 ######################################################################
 
 def leitura_limitados(campus_x):
-    print "Quantos limitados"
+  #  print "Quantos limitados"
     quantidade = int(raw_input()) 
     
-    print "Lista limitados"
+#    print "Lista limitados"
     linha = raw_input() 
     
     linha = map(int, linha.split())
         
-    if len(linha) == quantidade:
-        print "ok"
+ #   if len(linha) == quantidade:
+ #       print "ok"
 
     limitados_dict[str(campus_x)]=linha
     return None
-
-#
-# if NaLista(matriz,linha,valor) == True:
-#     resultado se true
-# else:
-#     resultado se falso
-# 
-
-def NaLista(lista,vertice, valor):
-    if valor in lista[vertice] :
-       return True
-    else:
-       return False
 
 def cria_Dict():
     for i in range(int(nCampus)):
@@ -139,20 +125,29 @@ def prim_AGM(matriz, lLimitados, arvore):
                 Q = reorganizaFila(Q, arvore)
     return arvore
 
-## main
-#inicializacao()
 
-print "Quantos campus:"
+# Soma o segundo valor do array
+def peso(array):
+    total = 0
+    for i in range(len(array)):
+        total = total + array[i][1]
+    return total
+
+
+## main
+
+#print "Quantos campus:"
 nCampus = raw_input()
 cria_Dict()
 
 for campus in range(int(nCampus)):
-    print "Leitura campus",campus+1
+ #   print "Leitura campus",campus+1
     leitura_campus(campus+1)
-    print "Limitados do campus",campus+1
+  #  print "Limitados do campus",campus+1
     leitura_limitados(campus+1)
 
 arvores_dict={}
 for campus in range(int(nCampus)):
     arvores_dict[str(campus+1)] = prim_AGM(matrizes_dict[str(campus+1)], limitados_dict[str(campus+1)], prim_inicializacao(matrizes_dict[str(campus+1)],limitados_dict[str(campus+1)]))
-    print arvores_dict[str(campus+1)]
+    print "Campus ",campus+1,":",peso(arvores_dict[str(campus+1)])
+#    print arvores_dict[str(campus+1)]
