@@ -86,16 +86,12 @@ def prim_inicializacao(matriz, lLimitados):
         n += 1
     return arvore
 
-#devolve a fila com os dispositivos ordenados
-#de forma crescente conforme a sua chave na árvore
-def reorganizaFila(Q, arvore):
-    novoQ = []
-    while Q:
-        for i in Q:
-            if all(arvore[j][1] >= arvore[i][1] for j in Q):
-                novoQ.append(i)
-                Q.remove(i)
-    return novoQ
+#retorna o vértice da fila que tem menor chave
+#na árvore
+def custoMin(Q, arvore):
+    for i in Q:
+        if all(arvore[j][1] >= arvore[i][1] for j in Q):
+            return i
 
 #retorna uma tabela representando a arvore geradora minima do grafo
 #onde cada linha é m dispositivo, a primeira coluna é seu predecessor
@@ -113,8 +109,8 @@ def prim_AGM(matriz, lLimitados, arvore):
 
     while Q:
         # retira da fila o dispositivo com menor chave
-        # na árvore (sempre o primeiro)
-        u = Q.pop(0)
+        u = custoMin(Q, arvore)
+        Q.remove(u)
         for v in range(len(matriz[u])):
             #para cada dispositivo, se custo(u,v) > chave(v)...
             if v in Q and matriz[v][u] < arvore[v][1]:
@@ -122,9 +118,6 @@ def prim_AGM(matriz, lLimitados, arvore):
                 arvore[v][0] = u
                 #chave de v é custo(u,v)
                 arvore[v][1] = matriz[u][v]
-
-                #reorganiza Q de forma crescente quanto à chave
-                Q = reorganizaFila(Q, arvore)
     return arvore
 
 
