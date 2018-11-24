@@ -102,12 +102,14 @@ def reorganizaFila(Q, arvore):
 #e a segunda a sua chave
 def prim_AGM(matriz, lLimitados, arvore):
     Q = []
-    r = 0; #raiz é o dispositivo de indice 0 na arvore
-    arvore[r][1] = 0
+
     #armazena em Q os indices dos dispositivos não limitados
     for v in range(len(matriz[0])):
         if (v+1) not in lLimitados:
             Q.append(v)
+
+    r = Q[0];  # raiz é o primeiro dispositivo na fila
+    arvore[r][1] = 0
 
     while Q:
         # retira da fila o dispositivo com menor chave
@@ -149,5 +151,5 @@ for campus in range(int(nCampus)):
 arvores_dict={}
 for campus in range(int(nCampus)):
     arvores_dict[str(campus+1)] = prim_AGM(matrizes_dict[str(campus+1)], limitados_dict[str(campus+1)], prim_inicializacao(matrizes_dict[str(campus+1)],limitados_dict[str(campus+1)]))
-    print "Campus ",campus+1,":",peso(arvores_dict[str(campus+1)])
+    print "Campus " + str(campus+1) + ":" + " " + str(peso(arvores_dict[str(campus+1)]))
 #    print arvores_dict[str(campus+1)]
