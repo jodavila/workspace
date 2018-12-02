@@ -5,26 +5,16 @@ __status__ = "Development"
 __date__   = "06/11/2018 21:37:03"
 
 ## funções
-#def inicializacao():
-nLimitados = 0
-lLimitados = []
-nCampus = 0
-nDisp = 0
-linha = 0
-matrizes_dict={}
-limitados_dict={}
 
 #
 # Realiza a leitura da quantidade de dispositivos dos campos e suas distancias
 # Com base Monta a matriz com isso
 #
 def leitura_campus(campus_x):
-#    print "Quantas dispositivos:"
     nDisp = int(raw_input()) 
     n = 0
     matriz=[]
     while n < nDisp:
- #       print "Lendo Dispositivo ",str(n+1)
         #leitura de uma string com os numeros
         linha = raw_input() 
         
@@ -42,16 +32,11 @@ def leitura_campus(campus_x):
 ######################################################################
 
 def leitura_limitados(campus_x):
-  #  print "Quantos limitados"
     quantidade = int(raw_input()) 
-    
-#    print "Lista limitados"
+
     linha = raw_input() 
     
     linha = map(int, linha.split())
-        
- #   if len(linha) == quantidade:
- #       print "ok"
 
     limitados_dict[str(campus_x)]=linha
     return None
@@ -121,7 +106,7 @@ def prim_AGM(matriz, lLimitados, arvore):
     return arvore
 
 
-# Soma o segundo valor do array
+# Soma o segundo valor do array (pesos das arestas da AGM)
 def peso(array):
     total = 0
     for i in range(len(array)):
@@ -130,6 +115,14 @@ def peso(array):
 
 
 ## main
+
+nLimitados = 0
+lLimitados = []
+nCampus = 0
+nDisp = 0
+linha = 0
+matrizes_dict={}
+limitados_dict={}
 
 #print "Quantos campus:"
 nCampus = raw_input()
