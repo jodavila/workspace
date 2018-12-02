@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #coding: utf-8
 
-__status__ = "Development" 
+__status__ = "Development"
 __date__   = "06/11/2018 21:37:03"
 
 ## funções
